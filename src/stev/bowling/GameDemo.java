@@ -41,6 +41,9 @@ public class GameDemo
 		g.addFrame(new NormalFrame(8).setPinsDown(1, 10));
 		g.addFrame(new NormalFrame(9).setPinsDown(1, 2).setPinsDown(2, 8));
 		g.addFrame(new LastFrame(10).setPinsDown(1, 1).setPinsDown(2, 9).setPinsDown(3, 3));
+		Frame normalFrame = new NormalFrame(2);
+		System.out.println(normalFrame.countRolls());
+		System.out.println(g.getCumulativeScore(2));
 		System.out.println(g);
 	}
 }
