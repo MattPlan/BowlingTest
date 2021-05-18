@@ -32,13 +32,23 @@ public class BowlingTest {
 
 	// TEST NormalFrame
 	// Constructor
+	@Test
+	public void testNormalFrame_constructor_positiveValue() {
+		new NormalFrame(5);
+	}
+	
+	@Test (expected = BowlingException.class)
+	public void testNormalFrame_constructor_valueHigherThan9() {
+		new NormalFrame(10);
+	}
+	
 	@Test (expected = BowlingException.class)
 	public void testNormalFrame_constructor_zeroValue() {
 		new NormalFrame(0);
 	}
 	
 	@Test (expected = BowlingException.class)
-	public void testNormalFrame_constructor_negativeValues() {
+	public void testNormalFrame_constructor_negativeValue() {
 		new NormalFrame(-5);
 	}
 	
@@ -88,6 +98,21 @@ public class BowlingTest {
 	
 	// TEST LastFrame
 	// Constructor
+	@Test 
+	public void testLastFrame_constructor_requiredValue10() {
+		new LastFrame(10);
+	}
+	
+	@Test 
+	public void testLastFrame_constructor_positiveValueLowerThan10AndHigherThan0() {
+		new LastFrame(1);
+	}
+	
+	@Test (expected = BowlingException.class)
+	public void testLastFrame_constructor_positiveValueHigerThan10() {
+		new LastFrame(20);
+	}
+	
 	@Test (expected = BowlingException.class)
 	public void testLastFrame_constructor_zeroValue() {
 		new LastFrame(0);
@@ -95,7 +120,7 @@ public class BowlingTest {
 	
 	@Test (expected = BowlingException.class)
 	public void testLastFrame_constructor_negativeValues() {
-		new LastFrame(-5);
+		new LastFrame(-1);
 	}
 
 }
