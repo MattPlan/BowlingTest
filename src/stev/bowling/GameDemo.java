@@ -43,6 +43,8 @@ public class GameDemo
 		g.addFrame(new LastFrame(10).setPinsDown(1, 1).setPinsDown(2, 9).setPinsDown(3, 3));
 		Frame normalFrame = new NormalFrame(2);
 		System.out.println(normalFrame.countRolls());
+		normalFrame.setPinsDown(1, 0);
+		System.out.println("Score de 0, nombre de lancers comptés : " + normalFrame.countRolls());
 		System.out.println(g.getCumulativeScore(2));
 		System.out.println(g);
 	}

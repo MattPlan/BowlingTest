@@ -49,7 +49,9 @@ Game
 NormalFrame
 	Constructeur(x)
 		x appartient à [1,9]
-
+	
+	getFrameNumber()
+		renvoie le numéro de la frame considérée
 
 LastFrame
 	Constructeur(x)
