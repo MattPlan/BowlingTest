@@ -5,6 +5,9 @@ import static org.junit.Assert.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 public class BowlingTest {
 	
@@ -153,7 +156,8 @@ public class BowlingTest {
 	@Test (expected = BowlingException.class)
 	public void testNormalFrame_countRolls_scoreAbove10_returnsException() {
 		normalFrame.setPinsDown(1, 11);
-		assertEquals("Wrong rolls count : ", 1, normalFrame.countRolls());
+		
+		//assertEquals("Wrong rolls count : ", 1, normalFrame.countRolls());
 	}
 	
 	/**
@@ -231,9 +235,9 @@ public class BowlingTest {
 	}
 	
 	
-	//-------------------------------------------------------------------------------------------
-	//-----------------------------------------LastFrame-----------------------------------------
-	//-------------------------------------------------------------------------------------------
+	/*-------------------------------------------------------------------------------------------
+	-------------------------------------------LastFrame-----------------------------------------
+	-------------------------------------------------------------------------------------------*/
 
 	//-----------------------------------LastFrame constructor-----------------------------------
 	
@@ -255,24 +259,37 @@ public class BowlingTest {
 	/**
 	 * Test that new LastFrame(x) with 0<x<10 throws a BowlingException.
 	 */
-	@Test (expected = BowlingException.class)
-	public void testLastFrame_constructor_positiveValueLowerThan10AndHigherThan0() {
-		new LastFrame(1);
+	@ParameterizedTest
+	@ValueSource(ints = {1, 5, 8, 20, 0, -1, Integer.MAX_VALUE})
+	public void testLastFrame_constructor_parametersException(int x) {
+		assertThrows("Out of bound parameters : ", BowlingException.class,() -> new LastFrame(x));
 	}
+//	@Test (expected = BowlingException.class)
+//	public void testLastFrame_constructor_positiveValueLowerThan10AndHigherThan0() {
+//		new LastFrame(1);
+//	}
+//	
+//	@Test (expected = BowlingException.class)
+//	public void testLastFrame_constructor_positiveValueHigerThan10() {
+//		new LastFrame(20);
+//	}
+//	
+//	@Test (expected = BowlingException.class)
+//	public void testLastFrame_constructor_zeroValue() {
+//		new LastFrame(0);
+//	}
+//	
+//	@Test (expected = BowlingException.class)
+//	public void testLastFrame_constructor_negativeValues() {
+//		new LastFrame(-1);
+//	}
 	
-	@Test (expected = BowlingException.class)
-	public void testLastFrame_constructor_positiveValueHigerThan10() {
-		new LastFrame(20);
-	}
+	// TEST SetPinsDown(x, y)
 	
-	@Test (expected = BowlingException.class)
-	public void testLastFrame_constructor_zeroValue() {
-		new LastFrame(0);
-	}
-	
-	@Test (expected = BowlingException.class)
-	public void testLastFrame_constructor_negativeValues() {
-		new LastFrame(-1);
+	@ParameterizedTest
+	@CsvSource({"-1,0", "0,5", "1,11"})
+	public void test_setPinsDown_parameters_exception(int x, int y) {
+		assertThrows("Out of bound parameters : ", BowlingException.class, () -> new NormalFrame(0).setPinsDown(x, y));
 	}
 
 }
