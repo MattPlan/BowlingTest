@@ -9,6 +9,12 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+/**
+ * The following tests have been produced using the framework JUnit5.
+ * 
+ * @author Matthieu Planas - Florian Zeni
+ */
+
 public class BowlingTest {
 	
 	private Game game;
@@ -34,9 +40,9 @@ public class BowlingTest {
 	}
 
 	
-	//---------------------------------------------------------------------------------------------
+	/*---------------------------------------------------------------------------------------------
 	//-----------------------------------------NormalFrame-----------------------------------------
-	//---------------------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------------------*/
 	
 	//-----------------------------------NormalFrame constructor-----------------------------------
 	
@@ -48,29 +54,23 @@ public class BowlingTest {
 	 */
 	
 	/**
-	 * Test that new NormalFrame(1) does not throw any BowlingException.
+	 * Test that new NormalFrame(x) with x inside the range 1-9 does not throw a BowlingException.
+	 * @param x  the frame number
 	 */
-	@Test
-	public void testNormalFrame_constructor_positiveValue() {
-		new NormalFrame(1);
+	@ParameterizedTest
+	@ValueSource(ints = {1, 5, 9})
+	public void testNormalFrame_constructor_rightParameters(int x) {
+		new NormalFrame(x);
 	}
 	
 	/**
-	 * Test that new NormalFrame(10) throws a BowlingException. 
+	 * Test that new NormalFrame(x) with x outside the range 1-9 throws a BowlingException.
+	 * @param x  the frame number
 	 */
-	@Test (expected = BowlingException.class)
-	public void testNormalFrame_constructor_valueHigherThan9() {
-		new NormalFrame(10);
-	}
-	
-	@Test (expected = BowlingException.class)
-	public void testNormalFrame_constructor_zeroValue() {
-		new NormalFrame(0);
-	}
-	
-	@Test (expected = BowlingException.class)
-	public void testNormalFrame_constructor_negativeValue() {
-		new NormalFrame(-1);
+	@ParameterizedTest
+	@ValueSource(ints = {Integer.MIN_VALUE, -1, 10, Integer.MAX_VALUE})
+	public void testNormalFrame_constructor_wrongParameters(int x) {
+		assertThrows("Out of bound parameters : ", BowlingException.class,() -> new NormalFrame(x));
 	}
 	
 	
@@ -94,27 +94,15 @@ public class BowlingTest {
 	/**
 	 * Test that a value other than 1 or 2 for the roll's number in NormalFrame.setPinsDown throws
 	 * a BowlingException.
+	 * Plus, also test that number outside the range 0-9 for the score throws a BowlingException.
+	 * @param x  the roll number for the frame
+	 * 		  y  the number of pins down (the score)
 	 */
 	@ParameterizedTest
-	@CsvSource({"-1,0", "0,5", "1,11", "3,5"})
-	public void test_setPinsDown_parameters_exception(int x, int y) {
+	@CsvSource({"-1,1", "0,5", "1,11", "3,5"})
+	public void testNormalFrame_setPinsDown_wrongParameters(int x, int y) {
 		assertThrows("Out of bound parameters : ", BowlingException.class, () -> new NormalFrame(0).setPinsDown(x, y));
 	}
-	
-//	@Test (expected = BowlingException.class)
-//	public void testNormalFrame_setPinsDown_negativeRollNumber() {
-//		normalFrame.setPinsDown(-1, 1);
-//	}
-//	
-//	@Test (expected = BowlingException.class)
-//	public void testNormalFrame_setPinsDown_zeroRollNumber() {
-//		normalFrame.setPinsDown(0, 1);
-//	}
-//	
-//	@Test (expected = BowlingException.class)
-//	public void testNormalFrame_setPinsDown_higherThan2RollNumber() {
-//		normalFrame.setPinsDown(3, 1);
-//	}
 	
 	
 	//-------------------------------------NormalFrame.reset()-------------------------------------
@@ -257,9 +245,9 @@ public class BowlingTest {
 	/**
 	 * Test that new LastFrame(10) does not throw any BowlingException.
 	 */
-	@Test 
-	public void testLastFrame_constructor_requiredValue10() {
-		new LastFrame(10);
+	@Test
+	public void testLastFrame_constructor_rightParameter() {
+		 new LastFrame(10);
 	}
 	
 	/**
@@ -269,15 +257,6 @@ public class BowlingTest {
 	@ValueSource(ints = {1, 5, 8, 20, 0, -1, Integer.MAX_VALUE})
 	public void testLastFrame_constructor_wrongParameters(int x) {
 		assertThrows("Out of bound parameters : ", BowlingException.class,() -> new LastFrame(x));
-	}
-	
-	
-	/**
-	 * Test that new LastFrame(10) does not throw an exception.
-	 */
-	@Test
-	public void testLastFrame_constructor_rightParameter() {
-		 new LastFrame(10);
 	}
 
 }
