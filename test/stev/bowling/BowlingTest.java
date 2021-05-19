@@ -95,20 +95,26 @@ public class BowlingTest {
 	 * Test that a value other than 1 or 2 for the roll's number in NormalFrame.setPinsDown throws
 	 * a BowlingException.
 	 */
-	@Test (expected = BowlingException.class)
-	public void testNormalFrame_setPinsDown_negativeRollNumber() {
-		normalFrame.setPinsDown(-1, 1);
+	@ParameterizedTest
+	@CsvSource({"-1,0", "0,5", "1,11", "3,5"})
+	public void test_setPinsDown_parameters_exception(int x, int y) {
+		assertThrows("Out of bound parameters : ", BowlingException.class, () -> new NormalFrame(0).setPinsDown(x, y));
 	}
 	
-	@Test (expected = BowlingException.class)
-	public void testNormalFrame_setPinsDown_zeroRollNumber() {
-		normalFrame.setPinsDown(0, 1);
-	}
-	
-	@Test (expected = BowlingException.class)
-	public void testNormalFrame_setPinsDown_higherThan2RollNumber() {
-		normalFrame.setPinsDown(3, 1);
-	}
+//	@Test (expected = BowlingException.class)
+//	public void testNormalFrame_setPinsDown_negativeRollNumber() {
+//		normalFrame.setPinsDown(-1, 1);
+//	}
+//	
+//	@Test (expected = BowlingException.class)
+//	public void testNormalFrame_setPinsDown_zeroRollNumber() {
+//		normalFrame.setPinsDown(0, 1);
+//	}
+//	
+//	@Test (expected = BowlingException.class)
+//	public void testNormalFrame_setPinsDown_higherThan2RollNumber() {
+//		normalFrame.setPinsDown(3, 1);
+//	}
 	
 	
 	//-------------------------------------NormalFrame.reset()-------------------------------------
@@ -257,39 +263,21 @@ public class BowlingTest {
 	}
 	
 	/**
-	 * Test that new LastFrame(x) with 0<x<10 throws a BowlingException.
+	 * Test that new LastFrame(x) with x != 10 throws a BowlingException.
 	 */
 	@ParameterizedTest
 	@ValueSource(ints = {1, 5, 8, 20, 0, -1, Integer.MAX_VALUE})
-	public void testLastFrame_constructor_parametersException(int x) {
+	public void testLastFrame_constructor_wrongParameters(int x) {
 		assertThrows("Out of bound parameters : ", BowlingException.class,() -> new LastFrame(x));
 	}
-//	@Test (expected = BowlingException.class)
-//	public void testLastFrame_constructor_positiveValueLowerThan10AndHigherThan0() {
-//		new LastFrame(1);
-//	}
-//	
-//	@Test (expected = BowlingException.class)
-//	public void testLastFrame_constructor_positiveValueHigerThan10() {
-//		new LastFrame(20);
-//	}
-//	
-//	@Test (expected = BowlingException.class)
-//	public void testLastFrame_constructor_zeroValue() {
-//		new LastFrame(0);
-//	}
-//	
-//	@Test (expected = BowlingException.class)
-//	public void testLastFrame_constructor_negativeValues() {
-//		new LastFrame(-1);
-//	}
 	
-	// TEST SetPinsDown(x, y)
 	
-	@ParameterizedTest
-	@CsvSource({"-1,0", "0,5", "1,11"})
-	public void test_setPinsDown_parameters_exception(int x, int y) {
-		assertThrows("Out of bound parameters : ", BowlingException.class, () -> new NormalFrame(0).setPinsDown(x, y));
+	/**
+	 * Test that new LastFrame(10) does not throw an exception.
+	 */
+	@Test
+	public void testLastFrame_constructor_rightParameter() {
+		 new LastFrame(10);
 	}
 
 }
