@@ -150,8 +150,7 @@ public class BowlingTest {
 	@Test (expected = BowlingException.class)
 	public void testNormalFrame_countRolls_scoreAbove10_returnsException() {
 		normalFrame.setPinsDown(1, 11);
-		
-		//assertEquals("Wrong rolls count : ", 1, normalFrame.countRolls());
+		assertEquals("Wrong rolls count : ", 1, normalFrame.countRolls());
 	}
 	
 	/**

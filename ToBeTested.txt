@@ -56,3 +56,9 @@ NormalFrame
 LastFrame
 	Constructeur(x)
 		x appartient est égal à 10
+
+Detected Errors
+	- SetPinsDown does not throw and error when called with y > 10 on first throw
+	- LastFrameConstructor does not throw an error when called with n between 0 and 9
+	- NormalFrame Constructor does not throw an error when called with n = 0, or n >= 10
+	
