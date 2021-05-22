@@ -391,7 +391,6 @@ public class BowlingTest {
 					() -> assertEquals("Wrong number of pins down : ", 5, normalFrame.countPinsDown()),
 					() -> assertEquals("Wrong framenumber : ", 1, normalFrame.getFrameNumber()));
 		}
-		
 
 		// ------------------------------------NormalFrame.toString()-----------------------------------
 
@@ -815,7 +814,7 @@ public class BowlingTest {
 
 		// ----------------------------------------Game.addFrame()--------------------------------------
 
-		/*
+		/**
 		 * Tests that addFrame does not return any error when called with proper
 		 * parameters in the right order
 		 */
@@ -827,7 +826,7 @@ public class BowlingTest {
 			game.addFrame(new LastFrame(10));
 		}
 
-		/*
+		/**
 		 * Tests that addFrame throws a BowlingException when called with object of type
 		 * LastFrame as first frame
 		 */
@@ -837,7 +836,7 @@ public class BowlingTest {
 					() -> new Game().addFrame(new LastFrame(10)));
 		}
 
-		/*
+		/**
 		 * Tests that addFrame throws a BowlingException when called with a wrong
 		 * NormalFrame first
 		 */
@@ -849,7 +848,7 @@ public class BowlingTest {
 					() -> new Game().addFrame(new NormalFrame(8)));
 		}
 
-		/*
+		/**
 		 * Tests that addFrame throws a BowlingException when called with object of type
 		 * NormalFrame in the wrong order
 		 */
@@ -862,7 +861,7 @@ public class BowlingTest {
 
 		// -------------------------------------Game.getCumulativeScore()-----------------------------------
 
-		/*
+		/**
 		 * Tests that getCumulativeScore returns the right score at each frame for
 		 * normal rounds, without spares or strikes
 		 */
@@ -891,7 +890,7 @@ public class BowlingTest {
 					() -> assertEquals("Wrong Score Found", 58, game.getCumulativeScore(10)));
 		}
 
-		/*
+		/**
 		 * Tests that getCumulativeScore returns the right score after a single strike,
 		 * and returns -1, when the next throw has yet to be completed
 		 */
@@ -905,7 +904,7 @@ public class BowlingTest {
 			assertEquals("Wrong Score Found", 29, game.getCumulativeScore(3));
 		}
 
-		/*
+		/**
 		 * Tests that getCumulativeScore returns the right score after two strikes in a
 		 * row, and returns -1, when the next throw has yet to be completed
 		 */
@@ -923,7 +922,7 @@ public class BowlingTest {
 			assertEquals("Wrong Score Found", 54, game.getCumulativeScore(4));
 		}
 
-		/*
+		/**
 		 * Tests that getCumulativeScore returns the right score after a spare, and
 		 * returns -1, when the next throw has yet to be completed
 		 */
@@ -936,7 +935,7 @@ public class BowlingTest {
 			assertEquals("Wrong Score Found", 21, game.getCumulativeScore(2));
 		}
 
-		/*
+		/**
 		 * Tests that getCumulativeScore returns the right score for the last frame with
 		 * three throws
 		 */
@@ -955,7 +954,7 @@ public class BowlingTest {
 			assertEquals("Wrong Score Found", 73, game.getCumulativeScore(10));
 		}
 
-		/*
+		/**
 		 * Tests that getCumulativeScore returns -1 if called before the round was
 		 * completed
 		 */
@@ -965,7 +964,7 @@ public class BowlingTest {
 			assertEquals("Score is not known yet", -1, game.getCumulativeScore(1));
 		}
 
-		/*
+		/**
 		 * Tests that getCumulativeScore returns -1 after a reset, and the proper score
 		 * after it was played again
 		 */
@@ -979,7 +978,7 @@ public class BowlingTest {
 			assertEquals("Score after round was played again", 16, game.getCumulativeScore(2));
 		}
 
-		/*
+		/**
 		 * Tests that getCumulativeScore throws a Bowling Exception if the requested
 		 * frame does not exist
 		 */
