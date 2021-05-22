@@ -1,5 +1,5 @@
 Game
-	setPinsDown(x, y) 
+	setPinsDown(x, y) FAIT
 		x appartient à [1, 2]
 		y appartient à [0,10]
 
@@ -8,7 +8,7 @@ Game
 
 		Après une exception, l'objet ne pas changer d'état, vérification avec un equals ? (Pas sûr que ça suffise s'il ne vérifie que l'adresse)
 
-	reset()
+	reset()	FAIT
 		Plus d'information dans le frame après un appel à reset
 		Pour le prochain appel de setPinsDown(x, y)
 			x doit valoir 1
@@ -16,16 +16,16 @@ Game
 	
 		Reset() peut être appelée à tout moment, avant les appels à setPins, entre, ou après
 
-	countRolls()	
+	countRolls() FAIT
 		Renvoie [0, 2]
 		Après un appel à setPinsDown(), renvoie 1 ...
 
-	countPinsDown()
+	countPinsDown() FAIT
 		Renvoie [0, 10]
 		Après un appel à setPinsDown(), renvoie le cumul des y
 		Après un appel à reset(), renvoie 0
 
-	countPinsDown(x)
+	countPinsDown(x) N'EXISTE PAS
 		x appartient à [1, 2]
 		Renvoie [-1, 10]
 
@@ -47,14 +47,14 @@ Game
 
 
 NormalFrame
-	Constructeur(x)
+	Constructeur(x) FAIT
 		x appartient à [1,9]
 	
-	getFrameNumber()
+	getFrameNumber() FAIT
 		renvoie le numéro de la frame considérée
 
 LastFrame
-	Constructeur(x)
+	Constructeur(x) FAIT
 		x appartient est égal à 10
 
 Detected Errors

@@ -59,7 +59,7 @@ public class BowlingTest {
 	 */
 	@ParameterizedTest
 	@ValueSource(ints = {1, 5, 9})
-	public void testNormalFrame_constructor_rightParameters(int x) {
+	public void testNormalFrame_constructor_validParameters(int x) {
 		new NormalFrame(x);
 	}
 	
@@ -68,9 +68,33 @@ public class BowlingTest {
 	 * @param x  the frame number
 	 */
 	@ParameterizedTest
-	@ValueSource(ints = {Integer.MIN_VALUE, -1, 10, Integer.MAX_VALUE})
+	@ValueSource(ints = {Integer.MIN_VALUE, -1, 0, 10, Integer.MAX_VALUE})
 	public void testNormalFrame_constructor_wrongParameters(int x) {
 		assertThrows("Out of bound parameters : ", BowlingException.class,() -> new NormalFrame(x));
+	}
+	
+	
+	//-------------------------------- NormalFrame.getFrameNumber()--------------------------------
+	
+	/**
+	 * There are 10 frames in a standard bowling game. The method getFrameNumber() should return an
+	 * integer between 1 and 10 which is equal to the number of the frame.
+	 */
+	
+	/**
+	 * Test that NormalFrame.getFrameNumber() returns the correct number equals to the frame number.
+	 */
+	@Test
+	public void testNormalFrame_getFrameNumber() {
+		int[] expected = new int[9];
+		int[] result = new int[expected.length];
+		
+		for (int i=1; i<10; i++) {
+			expected[i-1] = i; // index i-1 because it starts at 0 in Java
+			result[i-1] = new NormalFrame(i).getFrameNumber();
+		}
+		
+		assertArrayEquals("Results of getFrameNumber don't match expected values : ", expected, result);
 	}
 	
 	
@@ -83,12 +107,17 @@ public class BowlingTest {
 	 */
 	
 	/**
-	 * Test that a value like 1 or 2 for the roll's number in NormalFrame.setPinsDown does not throw 
-	 * a BowlingException.
+	 * Test that a value like 1 or 2 for the roll's number in NormalFrame.setPinsDown and a number for 
+	 * the score inside the range 0-10 does not throw a BowlingException.
+	 * @param x  the first roll number for the frame
+	 * 		  y  the number of pins down (the score) for the first roll
+	 * 		  a  the second roll number 
+	 * 		  b  the score for the second roll
 	 */
-	@Test
-	public void testNormalFrame_setPinsDown_normalRollNumber() {
-		normalFrame.setPinsDown(1, 1).setPinsDown(2, 1);
+	@ParameterizedTest
+	@CsvSource({"1,0,2,0", "1,1,2,5", "1,0,2,10"})
+	public void testNormalFrame_setPinsDown_validParameters(int x, int y, int a, int b) {
+		new NormalFrame(1).setPinsDown(x, y).setPinsDown(a, b);
 	}
 	
 	/**
@@ -99,29 +128,106 @@ public class BowlingTest {
 	 * 		  y  the number of pins down (the score)
 	 */
 	@ParameterizedTest
-	@CsvSource({"-1,1", "0,5", "1,11", "3,5"})
+	@CsvSource({"-1,1", "0,5", "3,5", "1,11", "1,-2"})
 	public void testNormalFrame_setPinsDown_wrongParameters(int x, int y) {
-		assertThrows("Out of bound parameters : ", BowlingException.class, () -> new NormalFrame(0).setPinsDown(x, y));
+		assertThrows("Out of bound parameters : ", BowlingException.class, 
+				() -> new NormalFrame(1).setPinsDown(x, y));
+	}
+	
+	/**
+	 * Test that switching order of declaration for roll's number throws a BowlingException.
+	 */
+	@Test
+	public void testNormalFrame_setPinsDown_inversedRollNumber() {
+		assertThrows("Wrong order for rolls : ", BowlingException.class, 
+				() -> new NormalFrame(1).setPinsDown(2, 1).setPinsDown(1, 1));
+	}
+	
+	/**
+	 * Test that you can't declare a score for the 2nd roll before having declared one for the 1st
+	 * roll. Throws a BowlingException.
+	 */
+	@Test
+	public void testNormalFrame_setPinsDown_declaringSecondRollFirst() {
+		assertThrows("Can't start setting the score with the second roll : ", BowlingException.class, 
+				() -> new NormalFrame(1).setPinsDown(2, 1));
+	}
+	
+	/**
+	 * Test that declaring a score higher than 10 with the sum of the rolls' score for a frame is 
+	 * throwing a BowlingException.
+	 */
+	@Test
+	public void testNormalFrame_setPinsDown_sumHigherThan10() {
+		assertThrows("Sum of scores is higher than 10 in one frame : ", BowlingException.class, 
+				() -> new NormalFrame(1).setPinsDown(1, 8).setPinsDown(2, 8));
+	}
+	
+	/**
+	 * Test that we can't declare a score in the second roll if the score in the first roll is equal
+	 * to 10. Throws a BowlingException.
+	 */
+	@Test
+	public void testNormalFrame_setPinsDown_firstRollScoreHigherThan10() {
+		assertThrows("Can't set the score in 2nd roll if it is of 10 in 1st roll : ", BowlingException.class, 
+				() -> new NormalFrame(1).setPinsDown(1, 10).setPinsDown(2, 0));
 	}
 	
 	
-	//-------------------------------------NormalFrame.reset()-------------------------------------
+	//---------------------------------NormalFrame.countPinsDown()---------------------------------
+	
+	/**
+	 * There are two rolls per frame. The method countPinsDown() returns the score of the frame 
+	 * between 0 and 10. After a call to the method setPinsDown(int roll, int score) this method 
+	 * returns the sum of the score of the two rolls.
+	 */
+	
+	/**
+	 * Test that after the initialization of a frame, countPinsDown returns 0 as the number of pins
+	 * down and does not throw a BowlingException.
+	 */
 	@Test
-	public void testNormalFrame_reset_afterSetPinsDown_returns0() {
-		normalFrame.setPinsDown(1, 2).setPinsDown(2, 3);
+	public void testNormalFrame_countPinsDown_afterInitialization() {
+		assertEquals("Wrong number of pins down after initialization : ", 0, 
+				new NormalFrame(1).countPinsDown());
+	}
+	
+	/**
+	 * Test that after setting a score for the first roll, countPinsDown returns the correct number 
+	 * of pins down and does not throw a BowlingException.
+	 */
+	@Test
+	public void testNormalFrame_countPinsDown_afterScoreFirstRoll() {
+		assertEquals("Wrong number of pins down after first roll : ", 2, 
+				normalFrame.setPinsDown(1,2).countPinsDown());
+	}
+	
+	/**
+	 * Test that after setting a score for the two rolls of a frame, countPinsDown returns the correct 
+	 * sum of pins down and does not throw a BowlingException.
+	 */
+	@Test
+	public void testNormalFrame_countPinsDown_afterScoreForAFrame() {
+		assertEquals("Wrong number of pins down after first roll : ", 5, 
+				normalFrame.setPinsDown(1,2).setPinsDown(2,3).countPinsDown());
+	}
+	
+	/**
+	 * Test that NormalFrame.countPinsDown() returns 0 after a reset of the frame.
+	 */
+	@Test
+	public void testNormalFrame_countPinsDown_onReset_returns0() {
+		normalFrame.setPinsDown(1, 5).setPinsDown(2,  3);
 		normalFrame.reset();
-		assertEquals("Wrong number of rolls : ", 0, normalFrame.countRolls());
-		assertEquals("Wrong number of pins down : ", 0, normalFrame.countPinsDown());
-//		assertEquals("Wrong number of pins down on first throw : ", 0, normalFrame.countPinsDown(1));
-//		assertEquals("Wrong number of pins down on second throw : ", 0, normalFrame.countPinsDown(2));
+		assertEquals("Wrong number of pins down after a reset : ", 0, normalFrame.countPinsDown());
 	}
 	
 
 	//-----------------------------------NormalFrame.countRolls()----------------------------------
 	
 	/**
-	 * There are two rolls per frame. The method countRolls() is returning an integer between 0 and 2
-	 * depending on the number of roll the player already made for this frame.
+	 * There are two rolls per frame. The method countRolls() is returning an integer between 0 
+	 * and 2 depending on the number of roll the player already made for this frame.
 	 * After a reset of the frame, it should return 0.
 	 */
 	
@@ -144,32 +250,12 @@ public class BowlingTest {
 	}
 	
 	/**
-	 * Test that NormalFrame.countRolls() returns a BowlingException when a score above 10 has
-	 * been set for the first roll.
-	 */
-	@Test (expected = BowlingException.class)
-	public void testNormalFrame_countRolls_scoreAbove10_returnsException() {
-		normalFrame.setPinsDown(1, 11);
-		assertEquals("Wrong rolls count : ", 1, normalFrame.countRolls());
-	}
-	
-	/**
 	 * Test that NormalFrame.countRolls() returns 2 when a score between 1 and 9 has been set for
 	 * the two rolls of the frame. The sum of the two score doesn't exceed 10.
 	 */
 	@Test
 	public void testNormalFrame_countRolls_twoRollsWithSumLowerThan10_returns2() {
 		normalFrame.setPinsDown(1, 1).setPinsDown(2, 3);
-		assertEquals("Wrong rolls count : ", 2, normalFrame.countRolls());
-	}
-	
-	/**
-	 * Test that NormalFrame.countRolls() returns a BowlingException when a score between 1 and 9 
-	 * has been set for the two rolls of the frame. The sum of the two score exceeds 10.
-	 */
-	@Test (expected = BowlingException.class)
-	public void testNormalFrame_countRolls_twoRollsWithSumHigherThan10_returnsException() {
-		normalFrame.setPinsDown(1, 1).setPinsDown(2, 10);
 		assertEquals("Wrong rolls count : ", 2, normalFrame.countRolls());
 	}
 	
@@ -204,35 +290,45 @@ public class BowlingTest {
 	}
 	
 	
-	//-----------------------------------NormalFrame.getFrameNumber()----------------------------------
-	
+	//-------------------------------------NormalFrame.reset()-------------------------------------
+
 	/**
-	 * There are 10 frames in a standard bowling game. The method getFrameNumber() should return an
-	 * integer between 1 and 10 which is equal to the number of the frame.
+	 * The reset() method is clearing all informations linked to a frame except its number. It can
+	 * be called before or after any other methods.
 	 */
 	
-	/**
-	 * Test that NormalFrame.getFrameNumber() returns the correct number equals to the frame number.
+	/** 
+	 * Test that using NormalFrame.reset() after any method does not throw a BowlingException and
+	 * that we get the correct informations about the frame.
 	 */
 	@Test
-	public void testNormalFrame_getFrameNumber() {
-		int[] expected = new int[9];
-		int[] result = new int[expected.length];
-		
-		for (int i=1; i<10; i++) {
-			expected[i-1] = i; // index i-1 because it starts at 0 in Java
-			result[i-1] = new NormalFrame(i).getFrameNumber();
-		}
-		
-		assertArrayEquals("Results of getFrameNumber don't match expected values : ", expected, result);
+	public void testNormalFrame_reset_afterSetPinsDown() {
+		normalFrame.setPinsDown(1, 2).setPinsDown(2, 3);
+		normalFrame.reset();
+		assertEquals("Wrong number of rolls : ", 0, normalFrame.countRolls());
+		assertEquals("Wrong number of pins down : ", 0, normalFrame.countPinsDown());
+		assertEquals("Wrong framenumber : ", 1, normalFrame.getFrameNumber());
 	}
 	
+	/** 
+	 * Test that using NormalFrame.reset() before any method does not throw a BowlingException and
+	 * that we get the correct informations about the frame.
+	 */
+	@Test
+	public void testNormalFrame_reset_beforeSetPinsDown() {
+		normalFrame.reset();
+		normalFrame.setPinsDown(1, 2).setPinsDown(2, 3);
+		assertEquals("Wrong number of rolls : ", 2, normalFrame.countRolls());
+		assertEquals("Wrong number of pins down : ", 5, normalFrame.countPinsDown());
+		assertEquals("Wrong framenumber : ", 1, normalFrame.getFrameNumber());
+	}
 	
-	/*-------------------------------------------------------------------------------------------
-	-------------------------------------------LastFrame-----------------------------------------
-	-------------------------------------------------------------------------------------------*/
 
-	//-----------------------------------LastFrame constructor-----------------------------------
+	/*---------------------------------------------------------------------------------------------
+	--------------------------------------------LastFrame------------------------------------------
+	---------------------------------------------------------------------------------------------*/
+
+	//------------------------------------LastFrame constructor------------------------------------
 	
 	/**
 	 * A game of bowling is represented in this implementation by ten frames comprised of nine 
@@ -245,7 +341,7 @@ public class BowlingTest {
 	 * Test that new LastFrame(10) does not throw any BowlingException.
 	 */
 	@Test
-	public void testLastFrame_constructor_rightParameter() {
+	public void testLastFrame_constructor_validParameter() {
 		 new LastFrame(10);
 	}
 	
