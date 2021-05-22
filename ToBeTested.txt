@@ -34,8 +34,11 @@ Game
 
 		Après un appel à reset, renvoie -1
 
+	getPinsDown(int roll) FAIT
+		Renvoie le nombre de quilles.
+		BowlingException si roll n'est pas défini.
 
-	toString()
+	toString() FAIT
 		Pour les objets de type NormalFrame, renvoie un string de longueur 2
 		Pour les objest de type FinalFrame, renvoie un string de longueur 3
 
