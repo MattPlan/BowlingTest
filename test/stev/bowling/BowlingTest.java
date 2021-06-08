@@ -1,7 +1,6 @@
 package stev.bowling;
 
-import static org.junit.Assert.*;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
@@ -75,7 +74,7 @@ public class BowlingTest {
 		@ParameterizedTest
 		@ValueSource(ints = { Integer.MIN_VALUE, -1, 0, 10, Integer.MAX_VALUE })
 		public void testNormalFrame_constructor_wrongParameters(int x) {
-			assertThrows("Out of bound parameters : ", BowlingException.class, () -> new NormalFrame(x));
+			assertThrows(BowlingException.class, () -> new NormalFrame(x), "Out of bound parameters : ");
 		}
 
 		// --------------------------------
@@ -101,7 +100,7 @@ public class BowlingTest {
 				result[i - 1] = new NormalFrame(i).getFrameNumber();
 			}
 
-			assertArrayEquals("Results of getFrameNumber don't match expected values : ", expected, result);
+			assertArrayEquals(expected, result, "Results of getFrameNumber don't match expected values : ");
 		}
 
 		// -------------------------NormalFrame.setPinsDown(int roll, int
@@ -139,7 +138,7 @@ public class BowlingTest {
 		@ParameterizedTest
 		@CsvSource({ "-1,1", "0,5", "3,5", "1,11", "1,-2" })
 		public void testNormalFrame_setPinsDown_wrongParameters(int x, int y) {
-			assertThrows("Out of bound parameters : ", BowlingException.class, () -> normalFrame.setPinsDown(x, y));
+			assertThrows(BowlingException.class, () -> normalFrame.setPinsDown(x, y), "Out of bound parameters : ");
 		}
 
 		/**
@@ -148,8 +147,8 @@ public class BowlingTest {
 		 */
 		@Test
 		public void testNormalFrame_setPinsDown_twoDeclarationsForOneRoll() {
-			assertThrows("Invalid number for rolls : ", BowlingException.class,
-					() -> new NormalFrame(1).setPinsDown(1, 1).setPinsDown(1, 3));
+			assertThrows(BowlingException.class, () -> new NormalFrame(1).setPinsDown(1, 1).setPinsDown(1, 3),
+					"Invalid number for rolls : ");
 		}
 
 		/**
@@ -158,8 +157,9 @@ public class BowlingTest {
 		 */
 		@Test
 		public void testNormalFrame_setPinsDown_3rdRoll() {
-			assertThrows("Invalid number for rolls : ", BowlingException.class,
-					() -> new NormalFrame(1).setPinsDown(1, 1).setPinsDown(2, 1).setPinsDown(3, 1));
+			assertThrows(BowlingException.class,
+					() -> new NormalFrame(1).setPinsDown(1, 1).setPinsDown(2, 1).setPinsDown(3, 1),
+					"Invalid number for rolls : ");
 		}
 
 		/**
@@ -168,8 +168,8 @@ public class BowlingTest {
 		 */
 		@Test
 		public void testNormalFrame_setPinsDown_inversedRollNumber() {
-			assertThrows("Wrong order for rolls : ", BowlingException.class,
-					() -> new NormalFrame(1).setPinsDown(2, 1).setPinsDown(1, 1));
+			assertThrows(BowlingException.class, () -> new NormalFrame(1).setPinsDown(2, 1).setPinsDown(1, 1),
+					"Wrong order for rolls : ");
 		}
 
 		/**
@@ -178,8 +178,8 @@ public class BowlingTest {
 		 */
 		@Test
 		public void testNormalFrame_setPinsDown_sumHigherThan10() {
-			assertThrows("Sum of scores is higher than 10 in one frame : ", BowlingException.class,
-					() -> new NormalFrame(1).setPinsDown(1, 8).setPinsDown(2, 8));
+			assertThrows(BowlingException.class, () -> new NormalFrame(1).setPinsDown(1, 8).setPinsDown(2, 8),
+					"Sum of scores is higher than 10 in one frame : ");
 		}
 
 		/**
@@ -188,8 +188,8 @@ public class BowlingTest {
 		 */
 		@Test
 		public void testNormalFrame_setPinsDown_firstRollStrike() {
-			assertThrows("Can't set the score in 2nd roll if it is of 10 in 1st roll : ", BowlingException.class,
-					() -> new NormalFrame(1).setPinsDown(1, 10).setPinsDown(2, 0));
+			assertThrows(BowlingException.class, () -> new NormalFrame(1).setPinsDown(1, 10).setPinsDown(2, 0),
+					"Can't set the score in 2nd roll if it is of 10 in 1st roll : ");
 		}
 
 		// ---------------------------------NormalFrame.countPinsDown()---------------------------------
@@ -206,7 +206,7 @@ public class BowlingTest {
 		 */
 		@Test
 		public void testNormalFrame_countPinsDown_afterInitialization() {
-			assertEquals("Wrong number of pins down after initialization : ", 0, new NormalFrame(1).countPinsDown());
+			assertEquals(0, new NormalFrame(1).countPinsDown(), "Wrong number of pins down after initialization : ");
 		}
 
 		/**
@@ -215,8 +215,8 @@ public class BowlingTest {
 		 */
 		@Test
 		public void testNormalFrame_countPinsDown_afterScoreForFirstRoll() {
-			assertEquals("Wrong number of pins down after first roll : ", 2,
-					normalFrame.setPinsDown(1, 2).countPinsDown());
+			assertEquals(2, normalFrame.setPinsDown(1, 2).countPinsDown(),
+					"Wrong number of pins down after first roll : ");
 		}
 
 		/**
@@ -225,8 +225,8 @@ public class BowlingTest {
 		 */
 		@Test
 		public void testNormalFrame_countPinsDown_afterScoreForAFrame() {
-			assertEquals("Wrong number of pins down after two rolls : ", 5,
-					normalFrame.setPinsDown(1, 2).setPinsDown(2, 3).countPinsDown());
+			assertEquals(5, normalFrame.setPinsDown(1, 2).setPinsDown(2, 3).countPinsDown(),
+					"Wrong number of pins down after two rolls : ");
 		}
 
 		/**
@@ -236,7 +236,7 @@ public class BowlingTest {
 		public void testNormalFrame_countPinsDown_onReset_returns0() {
 			normalFrame.setPinsDown(1, 5).setPinsDown(2, 3);
 			normalFrame.reset();
-			assertEquals("Wrong number of pins down after a reset : ", 0, normalFrame.countPinsDown());
+			assertEquals(0, normalFrame.countPinsDown(), "Wrong number of pins down after a reset : ");
 		}
 
 		// -----------------------------------NormalFrame.countRolls()----------------------------------
@@ -252,7 +252,7 @@ public class BowlingTest {
 		 */
 		@Test
 		public void testNormalFrame_countRolls_onNewFrame_returns0() {
-			assertEquals("Wrong rolls count : ", 0, normalFrame.countRolls());
+			assertEquals(0, normalFrame.countRolls(), "Wrong rolls count : ");
 		}
 
 		/**
@@ -262,7 +262,7 @@ public class BowlingTest {
 		@Test
 		public void testNormalFrame_countRolls_oneRoll_returns1() {
 			normalFrame.setPinsDown(1, 1);
-			assertEquals("Wrong rolls count : ", 1, normalFrame.countRolls());
+			assertEquals(1, normalFrame.countRolls(), "Wrong rolls count : ");
 		}
 
 		/**
@@ -273,7 +273,7 @@ public class BowlingTest {
 		@Test
 		public void testNormalFrame_countRolls_twoRollsWithSumLowerThan10_returns2() {
 			normalFrame.setPinsDown(1, 1).setPinsDown(2, 3);
-			assertEquals("Wrong rolls count : ", 2, normalFrame.countRolls());
+			assertEquals(2, normalFrame.countRolls(), "Wrong rolls count : ");
 		}
 
 		/**
@@ -283,7 +283,7 @@ public class BowlingTest {
 		@Test
 		public void testNormalFrame_countRolls_gutterOnFirstRoll_returns1() {
 			normalFrame.setPinsDown(1, 0);
-			assertEquals("Wrong rolls count : ", 1, normalFrame.countRolls());
+			assertEquals(1, normalFrame.countRolls(), "Wrong rolls count : ");
 		}
 
 		/**
@@ -293,7 +293,7 @@ public class BowlingTest {
 		@Test
 		public void testNormalFrame_countRolls_gutterOnSecondRoll_returns2() {
 			normalFrame.setPinsDown(1, 1).setPinsDown(2, 0);
-			assertEquals("Wrong rolls count : ", 2, normalFrame.countRolls());
+			assertEquals(2, normalFrame.countRolls(), "Wrong rolls count : ");
 		}
 
 		/**
@@ -303,7 +303,7 @@ public class BowlingTest {
 		public void testNormalFrame_countRolls_onReset_returns0() {
 			normalFrame.setPinsDown(1, 1);
 			normalFrame.reset();
-			assertEquals("Wrong rolls count : ", 0, normalFrame.countRolls());
+			assertEquals(0, normalFrame.countRolls(), "Wrong rolls count : ");
 		}
 
 		// ------------------------------NormalFrame.getPinsDown(int
@@ -322,7 +322,7 @@ public class BowlingTest {
 		@Test
 		public void testNormalFrame_getPinsDown_scoreForFirstRoll() {
 			normalFrame.setPinsDown(1, 1);
-			assertEquals("Wrong number of pins down for the first roll : ", 1, normalFrame.getPinsDown(1));
+			assertEquals(1, normalFrame.getPinsDown(1), "Wrong number of pins down for the first roll : ");
 		}
 
 		/**
@@ -332,7 +332,7 @@ public class BowlingTest {
 		@Test
 		public void testNormalFrame_getPinsDown_scoreForTwoRolls() {
 			normalFrame.setPinsDown(1, 1).setPinsDown(2, 2);
-			assertEquals("Wrong number of pins down for the second roll : ", 2, normalFrame.getPinsDown(2));
+			assertEquals(2, normalFrame.getPinsDown(2), "Wrong number of pins down for the second roll : ");
 		}
 
 		/**
@@ -344,7 +344,7 @@ public class BowlingTest {
 		@ParameterizedTest
 		@ValueSource(ints = { 3, 0, -1, Integer.MAX_VALUE })
 		public void testNormalFrame_getPinsDown_invalidRollNumber(int x) {
-			assertThrows("Invalid roll number : ", BowlingException.class, () -> normalFrame.getPinsDown(x));
+			assertThrows(BowlingException.class, () -> normalFrame.getPinsDown(x), "Invalid roll number : ");
 		}
 
 		/**
@@ -355,8 +355,8 @@ public class BowlingTest {
 		public void testNormalFrame_getPinsDown_afterReset() {
 			normalFrame.setPinsDown(1, 1).setPinsDown(2, 2);
 			normalFrame.reset();
-			assertThrows("There souldn't be any roll left in this frame", BowlingException.class,
-					() -> normalFrame.getPinsDown(1));
+			assertThrows(BowlingException.class, () -> normalFrame.getPinsDown(1),
+					"There souldn't be any roll left in this frame");
 		}
 
 		// -------------------------------------NormalFrame.reset()-------------------------------------
@@ -374,9 +374,9 @@ public class BowlingTest {
 		public void testNormalFrame_reset_afterSetPinsDown() {
 			normalFrame.setPinsDown(1, 2).setPinsDown(2, 3);
 			normalFrame.reset();
-			assertAll(() -> assertEquals("Wrong number of rolls : ", 0, normalFrame.countRolls()),
-					() -> assertEquals("Wrong number of pins down : ", 0, normalFrame.countPinsDown()),
-					() -> assertEquals("Wrong framenumber : ", 1, normalFrame.getFrameNumber()));
+			assertAll(() -> assertEquals(0, normalFrame.countRolls(), "Wrong number of rolls : "),
+					() -> assertEquals(0, normalFrame.countPinsDown(), "Wrong number of pins down : "),
+					() -> assertEquals(1, normalFrame.getFrameNumber(), "Wrong frame number : "));
 		}
 
 		/**
@@ -387,9 +387,9 @@ public class BowlingTest {
 		public void testNormalFrame_reset_beforeSetPinsDown() {
 			normalFrame.reset();
 			normalFrame.setPinsDown(1, 2).setPinsDown(2, 3);
-			assertAll(() -> assertEquals("Wrong number of rolls : ", 2, normalFrame.countRolls()),
-					() -> assertEquals("Wrong number of pins down : ", 5, normalFrame.countPinsDown()),
-					() -> assertEquals("Wrong framenumber : ", 1, normalFrame.getFrameNumber()));
+			assertAll(() -> assertEquals(2, normalFrame.countRolls(), "Wrong number of rolls : "),
+					() -> assertEquals(5, normalFrame.countPinsDown(), "Wrong number of pins down : "),
+					() -> assertEquals(1, normalFrame.getFrameNumber(), "Wrong framenumber : "));
 		}
 
 		// ------------------------------------NormalFrame.toString()-----------------------------------
@@ -401,12 +401,12 @@ public class BowlingTest {
 		@Test
 		public void testNormalFrame_toString() {
 			assertAll(
-					() -> assertEquals("Wrong number of characters with a total score lower than 10", 2,
-							new NormalFrame(1).setPinsDown(1, 1).setPinsDown(2, 2).toString().length()),
-					() -> assertEquals("Wrong number of characters with a strike for NormalFrame", 2,
-							new NormalFrame(1).setPinsDown(1, 10).toString().length()),
-					() -> assertEquals("Wrong number of characters with a spare for NormalFrame", 2,
-							new NormalFrame(1).setPinsDown(1, 5).setPinsDown(2, 5).toString().length()));
+					() -> assertEquals(2, new NormalFrame(1).setPinsDown(1, 1).setPinsDown(2, 2).toString().length(),
+							"Wrong number of characters with a total score lower than 10"),
+					() -> assertEquals(2, new NormalFrame(1).setPinsDown(1, 10).toString().length(),
+							"Wrong number of characters with a strike for NormalFrame"),
+					() -> assertEquals(2, new NormalFrame(1).setPinsDown(1, 5).setPinsDown(2, 5).toString().length(),
+							"Wrong number of characters with a spare for NormalFrame"));
 		}
 	}
 
@@ -443,7 +443,7 @@ public class BowlingTest {
 		@ParameterizedTest
 		@ValueSource(ints = { 1, 5, 8, 20, 0, -1, Integer.MAX_VALUE })
 		public void testLastFrame_constructor_wrongParameters(int x) {
-			assertThrows("Out of bound parameters : ", BowlingException.class, () -> new LastFrame(x));
+			assertThrows(BowlingException.class, () -> new LastFrame(x), "Out of bound parameters : ");
 		}
 
 		// ----------------------------------LastFrame.getFrameNumber()---------------------------------
@@ -462,7 +462,7 @@ public class BowlingTest {
 			int expected = 10;
 			int result = new LastFrame(10).getFrameNumber();
 
-			assertEquals("Result of getFrameNumber for LastFrame doesn't match expected value : ", expected, result);
+			assertEquals(expected, result, "Result of getFrameNumber for LastFrame doesn't match expected value : ");
 		}
 
 		// ---------------------------LastFrame.setPinsDown(int roll, int
@@ -501,7 +501,7 @@ public class BowlingTest {
 		@ParameterizedTest
 		@CsvSource({ "-1,1", "0,5", "4,5", "1,11", "1,-2" })
 		public void testLastFrame_setPinsDown_wrongParameters(int x, int y) {
-			assertThrows("Out of bound parameters : ", BowlingException.class, () -> lastFrame.setPinsDown(x, y));
+			assertThrows(BowlingException.class, () -> lastFrame.setPinsDown(x, y), "Out of bound parameters : ");
 		}
 
 		/**
@@ -532,8 +532,8 @@ public class BowlingTest {
 		@ParameterizedTest
 		@CsvSource({ "1,1,2,5,3,1", "1,0,2,0,3,4", "1,9,2,0,3,1", "1,0,2,9,3,3" })
 		public void testLastFrame_setPinsDown_invalidParametersFor3rdRoll(int x, int y, int a, int b, int r, int s) {
-			assertThrows("Out of bound parameters : ", BowlingException.class,
-					() -> lastFrame.setPinsDown(x, y).setPinsDown(a, b).setPinsDown(r, s));
+			assertThrows(BowlingException.class, () -> lastFrame.setPinsDown(x, y).setPinsDown(a, b).setPinsDown(r, s),
+					"Out of bound parameters : ");
 		}
 
 		/**
@@ -542,8 +542,8 @@ public class BowlingTest {
 		 */
 		@Test
 		public void testLastFrame_setPinsDown_twoDeclarationsForOneRoll() {
-			assertThrows("Invalid number for rolls : ", BowlingException.class,
-					() -> new NormalFrame(1).setPinsDown(1, 1).setPinsDown(1, 3));
+			assertThrows(BowlingException.class, () -> new NormalFrame(1).setPinsDown(1, 1).setPinsDown(1, 3),
+					"Invalid number for rolls : ");
 		}
 
 		/**
@@ -552,8 +552,9 @@ public class BowlingTest {
 		 */
 		@Test
 		public void testLastFrame_setPinsDown_inversedRollNumber() {
-			assertThrows("Wrong order for rolls : ", BowlingException.class,
-					() -> new LastFrame(10).setPinsDown(3, 1).setPinsDown(2, 1).setPinsDown(1, 1));
+			assertThrows(BowlingException.class,
+					() -> new LastFrame(10).setPinsDown(3, 1).setPinsDown(2, 1).setPinsDown(1, 1),
+					"Wrong order for rolls : ");
 		}
 
 		/**
@@ -562,8 +563,8 @@ public class BowlingTest {
 		 */
 		@Test
 		public void testLastFrame_setPinsDown_declaringSecondRollFirst() {
-			assertThrows("Can't start setting the score with the second roll : ", BowlingException.class,
-					() -> new LastFrame(10).setPinsDown(2, 1));
+			assertThrows(BowlingException.class, () -> new LastFrame(10).setPinsDown(2, 1),
+					"Can't start setting the score with the second roll : ");
 		}
 
 		/**
@@ -573,8 +574,8 @@ public class BowlingTest {
 		 */
 		@Test
 		public void testLastFrame_setPinsDown_declaringThirdRollFirst() {
-			assertThrows("Can't start setting the score with the second roll : ", BowlingException.class,
-					() -> new LastFrame(10).setPinsDown(3, 1));
+			assertThrows(BowlingException.class, () -> new LastFrame(10).setPinsDown(3, 1),
+					"Can't start setting the score with the second roll : ");
 		}
 
 		/**
@@ -583,8 +584,8 @@ public class BowlingTest {
 		 */
 		@Test
 		public void testLastFrame_setPinsDown_sumHigherThan10TwoRolls() {
-			assertThrows("Sum of scores is higher than 10 in one frame : ", BowlingException.class,
-					() -> new LastFrame(10).setPinsDown(1, 8).setPinsDown(2, 8));
+			assertThrows(BowlingException.class, () -> new LastFrame(10).setPinsDown(1, 8).setPinsDown(2, 8),
+					"Sum of scores is higher than 10 in one frame : ");
 		}
 
 		// ----------------------------------LastFrame.countPinsDown()----------------------------------
@@ -602,7 +603,7 @@ public class BowlingTest {
 		 */
 		@Test
 		public void testLastFrame_countPinsDown_afterInitialization() {
-			assertEquals("Wrong number of pins down after initialization : ", 0, new LastFrame(10).countPinsDown());
+			assertEquals(0, new LastFrame(10).countPinsDown(), "Wrong number of pins down after initialization : ");
 		}
 
 		/**
@@ -611,8 +612,8 @@ public class BowlingTest {
 		 */
 		@Test
 		public void testLastFrame_countPinsDown_afterScoreForFirstRoll() {
-			assertEquals("Wrong number of pins down after first roll : ", 2,
-					lastFrame.setPinsDown(1, 2).countPinsDown());
+			assertEquals(2, lastFrame.setPinsDown(1, 2).countPinsDown(),
+					"Wrong number of pins down after first roll : ");
 		}
 
 		/**
@@ -621,8 +622,8 @@ public class BowlingTest {
 		 */
 		@Test
 		public void testLastFrame_countPinsDown_afterScoreForTwoRolls() {
-			assertEquals("Wrong number of pins down after two rolls : ", 5,
-					lastFrame.setPinsDown(1, 2).setPinsDown(2, 3).countPinsDown());
+			assertEquals(5, lastFrame.setPinsDown(1, 2).setPinsDown(2, 3).countPinsDown(),
+					"Wrong number of pins down after two rolls : ");
 		}
 
 		/**
@@ -632,8 +633,8 @@ public class BowlingTest {
 		 */
 		@Test
 		public void testLastFrame_countPinsDown_afterScoreForThreeRolls() {
-			assertEquals("Wrong number of pins down after three rolls : ", 15,
-					lastFrame.setPinsDown(1, 5).setPinsDown(2, 5).setPinsDown(3, 5).countPinsDown());
+			assertEquals(15, lastFrame.setPinsDown(1, 5).setPinsDown(2, 5).setPinsDown(3, 5).countPinsDown(),
+					"Wrong number of pins down after three rolls : ");
 		}
 
 		/**
@@ -643,7 +644,7 @@ public class BowlingTest {
 		public void testLastFrame_countPinsDown_onReset_returns0() {
 			lastFrame.setPinsDown(1, 5).setPinsDown(2, 5).setPinsDown(3, 5);
 			lastFrame.reset();
-			assertEquals("Wrong number of pins down after a reset for lastFrame : ", 0, lastFrame.countPinsDown());
+			assertEquals(0, lastFrame.countPinsDown(), "Wrong number of pins down after a reset for lastFrame : ");
 		}
 
 		// ------------------------------------LastFrame.countRolls()-----------------------------------
@@ -660,7 +661,7 @@ public class BowlingTest {
 		 */
 		@Test
 		public void testLastFrame_countRolls_onNewFrame_returns0() {
-			assertEquals("Wrong rolls count for lastFrame : ", 0, new LastFrame(10).countRolls());
+			assertEquals(0, new LastFrame(10).countRolls(), "Wrong rolls count for lastFrame : ");
 		}
 
 		/**
@@ -670,7 +671,7 @@ public class BowlingTest {
 		@Test
 		public void testLastFrame_countRolls_oneRoll_returns1() {
 			lastFrame.setPinsDown(1, 1);
-			assertEquals("Wrong rolls count for lastFrame : ", 1, lastFrame.countRolls());
+			assertEquals(1, lastFrame.countRolls(), "Wrong rolls count for lastFrame : ");
 		}
 
 		/**
@@ -681,7 +682,7 @@ public class BowlingTest {
 		@Test
 		public void testLastFrame_countRolls_twoRollsWithSumLowerThan10_returns2() {
 			lastFrame.setPinsDown(1, 1).setPinsDown(2, 3);
-			assertEquals("Wrong rolls count for lastFrame : ", 2, lastFrame.countRolls());
+			assertEquals(2, lastFrame.countRolls(), "Wrong rolls count for lastFrame : ");
 		}
 
 		/**
@@ -691,7 +692,7 @@ public class BowlingTest {
 		@Test
 		public void testLastFrame_countRolls_threeRolls_returns3() {
 			lastFrame.setPinsDown(1, 1).setPinsDown(2, 9).setPinsDown(3, 1);
-			assertEquals("Wrong rolls count for lastFrame : ", 3, lastFrame.countRolls());
+			assertEquals(3, lastFrame.countRolls(), "Wrong rolls count for lastFrame : ");
 		}
 
 		/**
@@ -701,7 +702,7 @@ public class BowlingTest {
 		@Test
 		public void testLastFrame_countRolls_gutterOnFirstRoll_returns1() {
 			lastFrame.setPinsDown(1, 0);
-			assertEquals("Wrong rolls count for lastFrame : ", 1, lastFrame.countRolls());
+			assertEquals(1, lastFrame.countRolls(), "Wrong rolls count for lastFrame : ");
 		}
 
 		/**
@@ -711,7 +712,7 @@ public class BowlingTest {
 		@Test
 		public void testLastFrame_countRolls_gutterOnSecondRoll_returns2() {
 			lastFrame.setPinsDown(1, 1).setPinsDown(2, 0);
-			assertEquals("Wrong rolls count for lastFrame : ", 2, lastFrame.countRolls());
+			assertEquals(2, lastFrame.countRolls(), "Wrong rolls count for lastFrame : ");
 		}
 
 		/**
@@ -721,7 +722,7 @@ public class BowlingTest {
 		public void testLastFrame_countRolls_onReset_returns0() {
 			lastFrame.setPinsDown(1, 1).setPinsDown(2, 9).setPinsDown(3, 5);
 			lastFrame.reset();
-			assertEquals("Wrong rolls count for lastFrame : ", 0, lastFrame.countRolls());
+			assertEquals(0, lastFrame.countRolls(), "Wrong rolls count for lastFrame : ");
 		}
 
 		// -------------------------------LastFrame.getPinsDown(int
@@ -740,7 +741,7 @@ public class BowlingTest {
 		@Test
 		public void testLastFrame_getPinsDown_scoreForFirstRoll() {
 			lastFrame.setPinsDown(1, 1);
-			assertEquals("Wrong number of pins down for the first roll : ", 1, lastFrame.getPinsDown(1));
+			assertEquals(1, lastFrame.getPinsDown(1), "Wrong number of pins down for the first roll : ");
 		}
 
 		/**
@@ -750,7 +751,7 @@ public class BowlingTest {
 		@Test
 		public void testLastFrame_getPinsDown_scoreForTwoRolls() {
 			lastFrame.setPinsDown(1, 1).setPinsDown(2, 2);
-			assertEquals("Wrong number of pins down for the second roll : ", 2, lastFrame.getPinsDown(2));
+			assertEquals(2, lastFrame.getPinsDown(2), "Wrong number of pins down for the second roll : ");
 		}
 
 		/**
@@ -760,7 +761,7 @@ public class BowlingTest {
 		@Test
 		public void testLastFrame_getPinsDown_scoreForThreeRolls() {
 			lastFrame.setPinsDown(1, 8).setPinsDown(2, 2).setPinsDown(3, 7);
-			assertEquals("Wrong number of pins down for the third roll : ", 7, lastFrame.getPinsDown(3));
+			assertEquals(7, lastFrame.getPinsDown(3), "Wrong number of pins down for the third roll : ");
 		}
 
 		/**
@@ -772,7 +773,7 @@ public class BowlingTest {
 		@ParameterizedTest
 		@ValueSource(ints = { 4, 0, -1, Integer.MAX_VALUE })
 		public void testLastFrame_getPinsDown_invalidRollNumber(int x) {
-			assertThrows("Invalid roll number : ", BowlingException.class, () -> lastFrame.getPinsDown(x));
+			assertThrows(BowlingException.class, () -> lastFrame.getPinsDown(x), "Invalid roll number : ");
 		}
 
 		/**
@@ -783,8 +784,8 @@ public class BowlingTest {
 		public void testLastFrame_getPinsDown_afterReset() {
 			lastFrame.setPinsDown(1, 1).setPinsDown(2, 9).setPinsDown(3, 5);
 			lastFrame.reset();
-			assertThrows("There souldn't be any roll left in this frame", BowlingException.class,
-					() -> lastFrame.getPinsDown(3));
+			assertThrows(BowlingException.class, () -> lastFrame.getPinsDown(3),
+					"There souldn't be any roll left in this frame");
 		}
 
 		// ------------------------------------LastFrame.toString()-----------------------------------
@@ -796,13 +797,15 @@ public class BowlingTest {
 		@Test
 		public void testLastFrame_toString() {
 			assertAll(
-					() -> assertEquals("Wrong number of characters with a total score lower than 10", 3,
-							new LastFrame(10).setPinsDown(1, 1).setPinsDown(2, 2).toString().length()),
-					() -> assertEquals("Wrong number of characters with a strike for LastFrame", 3,
+					() -> assertEquals(3, new LastFrame(10).setPinsDown(1, 1).setPinsDown(2, 2).toString().length(),
+							"Wrong number of characters with a total score lower than 10"),
+					() -> assertEquals(3,
 							new LastFrame(10).setPinsDown(1, 10).setPinsDown(2, 0).setPinsDown(3, 10).toString()
-									.length()),
-					() -> assertEquals("Wrong number of characters with a spare for LastFrame", 3, new LastFrame(10)
-							.setPinsDown(1, 5).setPinsDown(2, 5).setPinsDown(3, 2).toString().length()));
+									.length(),
+							"Wrong number of characters with a strike for LastFrame"),
+					() -> assertEquals(3,
+							new LastFrame(10).setPinsDown(1, 5).setPinsDown(2, 5).setPinsDown(3, 2).toString().length(),
+							"Wrong number of characters with a strike for LastFrame"));
 		}
 	}
 	/*---------------------------------------------------------------------------------------------
@@ -832,8 +835,8 @@ public class BowlingTest {
 		 */
 		@Test
 		public void testGame_addFrame_lastFrameFirst() {
-			assertThrows("Last Frame can't come first", BowlingException.class,
-					() -> new Game().addFrame(new LastFrame(10)));
+			assertThrows(BowlingException.class, () -> new Game().addFrame(new LastFrame(10)),
+					"Last Frame can't come first");
 		}
 
 		/**
@@ -842,10 +845,10 @@ public class BowlingTest {
 		 */
 		@Test
 		public void testGame_addFrame_wrongNormalFramesFirst() {
-			assertThrows("Wrong Normal Frame can't come first", BowlingException.class,
-					() -> new Game().addFrame(new NormalFrame(5)));
-			assertThrows("Wrong Normal Frame can't come first", BowlingException.class,
-					() -> new Game().addFrame(new NormalFrame(8)));
+			assertThrows(BowlingException.class, () -> new Game().addFrame(new NormalFrame(5)),
+					"Wrong Normal Frame can't come first");
+			assertThrows(BowlingException.class, () -> new Game().addFrame(new NormalFrame(8)),
+					"Wrong Normal Frame can't come first");
 		}
 
 		/**
@@ -855,8 +858,8 @@ public class BowlingTest {
 		@Test
 		public void testGame_addFrame_unorderedNormalFrames() {
 			game.addFrame(new NormalFrame(1));
-			assertThrows("Last Frame can't come first", BowlingException.class,
-					() -> game.addFrame(new NormalFrame(4)));
+			assertThrows(BowlingException.class, () -> game.addFrame(new NormalFrame(4)),
+					"Last Frame can't come first");
 		}
 
 		// -------------------------------------Game.getCumulativeScore()-----------------------------------
@@ -878,16 +881,16 @@ public class BowlingTest {
 			game.addFrame(new NormalFrame(9).setPinsDown(1, 1).setPinsDown(2, 8));
 			game.addFrame(new LastFrame(10).setPinsDown(1, 1).setPinsDown(2, 4));
 
-			assertAll(() -> assertEquals("Wrong Score Found", 9, game.getCumulativeScore(1)),
-					() -> assertEquals("Wrong Score Found", 15, game.getCumulativeScore(2)),
-					() -> assertEquals("Wrong Score Found", 20, game.getCumulativeScore(3)),
-					() -> assertEquals("Wrong Score Found", 24, game.getCumulativeScore(4)),
-					() -> assertEquals("Wrong Score Found", 29, game.getCumulativeScore(5)),
-					() -> assertEquals("Wrong Score Found", 29, game.getCumulativeScore(6)),
-					() -> assertEquals("Wrong Score Found", 35, game.getCumulativeScore(7)),
-					() -> assertEquals("Wrong Score Found", 44, game.getCumulativeScore(8)),
-					() -> assertEquals("Wrong Score Found", 53, game.getCumulativeScore(9)),
-					() -> assertEquals("Wrong Score Found", 58, game.getCumulativeScore(10)));
+			assertAll(() -> assertEquals(9, game.getCumulativeScore(1), "Wrong Score Found"),
+					() -> assertEquals(15, game.getCumulativeScore(2), "Wrong Score Found"),
+					() -> assertEquals(20, game.getCumulativeScore(3), "Wrong Score Found"),
+					() -> assertEquals(24, game.getCumulativeScore(4), "Wrong Score Found"),
+					() -> assertEquals(29, game.getCumulativeScore(5), "Wrong Score Found"),
+					() -> assertEquals(29, game.getCumulativeScore(6), "Wrong Score Found"),
+					() -> assertEquals(35, game.getCumulativeScore(7), "Wrong Score Found"),
+					() -> assertEquals(44, game.getCumulativeScore(8), "Wrong Score Found"),
+					() -> assertEquals(53, game.getCumulativeScore(9), "Wrong Score Found"),
+					() -> assertEquals(58, game.getCumulativeScore(10), "Wrong Score Found"));
 		}
 
 		/**
@@ -898,10 +901,10 @@ public class BowlingTest {
 		public void testGame_getCumulativeScore_singleStrikeBehaviour() {
 			game.addFrame(new NormalFrame(1).setPinsDown(1, 3).setPinsDown(2, 6));
 			game.addFrame(new NormalFrame(2).setPinsDown(1, 10));
-			assertEquals("Score That can't be determined yet", -1, game.getCumulativeScore(2));
+			assertEquals(-1, game.getCumulativeScore(2), "Score That can't be determined yet");
 			game.addFrame(new NormalFrame(3).setPinsDown(1, 5).setPinsDown(2, 0));
-			assertEquals("Wrong Score Found", 24, game.getCumulativeScore(2));
-			assertEquals("Wrong Score Found", 29, game.getCumulativeScore(3));
+			assertEquals(24, game.getCumulativeScore(2), "Wrong Score Found");
+			assertEquals(29, game.getCumulativeScore(3), "Wrong Score Found");
 		}
 
 		/**
@@ -912,14 +915,14 @@ public class BowlingTest {
 		public void testGame_getCumulativeScore_doubleStrikeBehaviour() {
 			game.addFrame(new NormalFrame(1).setPinsDown(1, 3).setPinsDown(2, 6));
 			game.addFrame(new NormalFrame(2).setPinsDown(1, 10));
-			assertEquals("Score That can't be determined yet", -1, game.getCumulativeScore(2));
+			assertEquals(-1, game.getCumulativeScore(2), "Score That can't be determined yet");
 			game.addFrame(new NormalFrame(3).setPinsDown(1, 10));
-			assertEquals("Score That can't be determined yet", -1, game.getCumulativeScore(2));
-			assertEquals("Score That can't be determined yet", -1, game.getCumulativeScore(3));
+			assertEquals(-1, game.getCumulativeScore(2), "Score That can't be determined yet");
+			assertEquals(-1, game.getCumulativeScore(3), "Score That can't be determined yet");
 			game.addFrame(new NormalFrame(4).setPinsDown(1, 3).setPinsDown(2, 2));
-			assertEquals("Wrong Score Found", 34, game.getCumulativeScore(2));
-			assertEquals("Wrong Score Found", 49, game.getCumulativeScore(3));
-			assertEquals("Wrong Score Found", 54, game.getCumulativeScore(4));
+			assertEquals(34, game.getCumulativeScore(2), "Wrong Score Found");
+			assertEquals(49, game.getCumulativeScore(3), "Wrong Score Found");
+			assertEquals(54, game.getCumulativeScore(4), "Wrong Score Found");
 		}
 
 		/**
@@ -929,10 +932,10 @@ public class BowlingTest {
 		@Test
 		public void testGame_getCumulativeScore_spareBehaviour() {
 			game.addFrame(new NormalFrame(1).setPinsDown(1, 3).setPinsDown(2, 7));
-			assertEquals("Score That can't be determined yet should be -1", -1, game.getCumulativeScore(1));
+			assertEquals(-1, game.getCumulativeScore(1), "Score That can't be determined yet should be -1");
 			game.addFrame(new NormalFrame(2).setPinsDown(1, 4).setPinsDown(2, 3));
-			assertEquals("Wrong Score Found", 14, game.getCumulativeScore(1));
-			assertEquals("Wrong Score Found", 21, game.getCumulativeScore(2));
+			assertEquals(14, game.getCumulativeScore(1), "Wrong Score Found");
+			assertEquals(21, game.getCumulativeScore(2), "Wrong Score Found");
 		}
 
 		/**
@@ -951,7 +954,7 @@ public class BowlingTest {
 			game.addFrame(new NormalFrame(8).setPinsDown(1, 7).setPinsDown(2, 2));
 			game.addFrame(new NormalFrame(9).setPinsDown(1, 1).setPinsDown(2, 8));
 			game.addFrame(new LastFrame(10).setPinsDown(1, 1).setPinsDown(2, 9).setPinsDown(3, 10));
-			assertEquals("Wrong Score Found", 73, game.getCumulativeScore(10));
+			assertEquals(73, game.getCumulativeScore(10), "Wrong Score Found");
 		}
 
 		/**
@@ -961,7 +964,7 @@ public class BowlingTest {
 		@Test
 		public void testGame_getCumulativeScore_beforeSetPins() {
 			game.addFrame(new NormalFrame(1));
-			assertEquals("Score is not known yet", -1, game.getCumulativeScore(1));
+			assertEquals(-1, game.getCumulativeScore(1), "Score is not known yet");
 		}
 
 		/**
@@ -973,9 +976,9 @@ public class BowlingTest {
 			game.addFrame(new NormalFrame(1).setPinsDown(1, 3).setPinsDown(2, 6));
 			Frame f = new NormalFrame(2).setPinsDown(1, 3).setPinsDown(2, 6).reset();
 			game.addFrame(f);
-			assertEquals("Score after reset", -1, game.getCumulativeScore(2));
+			assertEquals(-1, game.getCumulativeScore(2), "Score after reset");
 			f.setPinsDown(1, 4).setPinsDown(2, 3);
-			assertEquals("Score after round was played again", 16, game.getCumulativeScore(2));
+			assertEquals(16, game.getCumulativeScore(2), "Score after round was played again");
 		}
 
 		/**
@@ -984,11 +987,11 @@ public class BowlingTest {
 		 */
 		@Test
 		public void testGame_getCumulativeScore_unknownRound() {
-			assertThrows("Score can't be calculated before the round is played", BowlingException.class,
-					() -> game.getCumulativeScore(1));
+			assertThrows(BowlingException.class, () -> game.getCumulativeScore(1),
+					"Score can't be calculated before the round is played");
 			game.addFrame(new NormalFrame(1).setPinsDown(1, 3).setPinsDown(2, 6));
-			assertThrows("Score can't be calculated before the round is played", BowlingException.class,
-					() -> game.getCumulativeScore(2));
+			assertThrows(BowlingException.class, () -> game.getCumulativeScore(2),
+					"Score can't be calculated before the round is played");
 		}
 	}
 }
